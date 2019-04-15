@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "307829599341",
+    "firebase_url": "https://juanpalomo-d0c21.firebaseio.com",
+    "project_id": "juanpalomo-d0c21",
+    "storage_bucket": "juanpalomo-d0c21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307829599341:android:241e4b9e5a2be9df",
+        "android_client_info": {
+          "package_name": "com.flaiserapps.juanpalomo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307829599341-evv7u5n1sbk9kcl3as0bk7htaq5oiue8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOrf-tRKazbFPGAeMMyTomVotPeiFrLHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307829599341-evv7u5n1sbk9kcl3as0bk7htaq5oiue8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
