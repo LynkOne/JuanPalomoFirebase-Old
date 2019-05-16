@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_constraintTop_toTopOf="parent"
+    android:background="@color/navHeaderBackground"
+    android:padding="20dp"
+    >
+
+    <TextView
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/navTitle"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/navHover"/>
+    <TextView
+        app:layout_constraintTop_toBottomOf="@+id/navTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="@string/app_desc"
+        android:textColor="@color/navText"/>
+
+</android.support.constraint.ConstraintLayout>
