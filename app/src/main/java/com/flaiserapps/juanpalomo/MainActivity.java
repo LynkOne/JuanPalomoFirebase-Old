@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout fl;
@@ -41,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fm=getSupportFragmentManager();
+        transaction=fm.beginTransaction();
+        fl=(FrameLayout) findViewById(R.id.fragment_main);
+        recyclerRecetasFragment= new RecyclerRecetasFragment();
+        transaction.replace(fl.getId(), recyclerRecetasFragment);
+        transaction.commit();
     }
 
 
@@ -72,6 +79,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.menu_explora:
+                //Toast.makeText(this, "pulsado menu explorar recetas", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_recetas_ing:
+                //Toast.makeText(this, "pulsado menu recetas por ingredientes", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_almacen:
+                //Toast.makeText(this, "pulsado menu almacen", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_configuracion:
+                break;
+            case R.id.menu_acercade:
+                break;
+            default:
+                break;
+        }
         return false;
     }
 }

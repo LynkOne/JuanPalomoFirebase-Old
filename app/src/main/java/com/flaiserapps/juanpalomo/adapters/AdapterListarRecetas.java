@@ -84,7 +84,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
     @Override
     public int getItemCount() {
-        //Tiene que devolver el numero de productos del arraylist para indicarselo al recyclerview
+        //Tiene que devolver el numero de recetas del arraylist para indicarselo al recyclerview
         return recetas.size();
     }
 }
