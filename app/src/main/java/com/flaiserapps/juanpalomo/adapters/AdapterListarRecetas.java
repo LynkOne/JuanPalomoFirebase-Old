@@ -59,7 +59,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
 
     public AdapterListarRecetas(ArrayList<Receta> recetas, Context contexto) {
-        recetas = recetas;
+        this.recetas = recetas;
         this.contexto = contexto;
     }
 

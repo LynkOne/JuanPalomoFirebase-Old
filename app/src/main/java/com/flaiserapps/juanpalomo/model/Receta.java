@@ -15,6 +15,13 @@ public class Receta implements Parcelable {
 
     public Receta() {
     }
+    public Receta(String nombre, String descripcion, String elaboracion, ArrayList<String> ingredientes) {
+
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.elaboracion = elaboracion;
+        this.ingredientes = ingredientes;
+    }
 
     public Receta(String id, String nombre, String descripcion, String elaboracion, ArrayList<String> ingredientes) {
         this.id = id;

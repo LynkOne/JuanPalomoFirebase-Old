@@ -4,10 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.flaiserapps.juanpalomo.adapters.AdapterListarRecetas;
+import com.flaiserapps.juanpalomo.model.Receta;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 
 public class RecyclerRecetasFragment extends Fragment {
@@ -20,6 +32,12 @@ public class RecyclerRecetasFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    private RecyclerView recyclerRecetas;
+    private AdapterListarRecetas adapterListaRec;
+    private RecyclerView.LayoutManager rVLM;
+    private ArrayList<Receta> recetas;
+    private DatabaseReference dbr;
 
 
     public RecyclerRecetasFragment() {
@@ -51,6 +69,8 @@ public class RecyclerRecetasFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -58,6 +78,42 @@ public class RecyclerRecetasFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_recycler_recetas, container, false);
+
+        recyclerRecetas=(RecyclerView) v.findViewById(R.id.recycler_recetas);
+        dbr= FirebaseDatabase.getInstance().getReference("recetas");
+        Log.d("hectorrr", "accediendo a Firebase ruta: "+dbr.toString());
+        dbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("hectorrr", "DataChange, actualizando arraylist...");
+                recetas.clear();
+
+                for (DataSnapshot ds:dataSnapshot.getChildren()    ) {
+                    Log.d("hectorrr", ds.getValue().toString());
+                    Log.d("hectorrr", ds.getKey());
+
+                    Receta aux=ds.getValue(Receta.class);
+                    aux.setId(ds.getKey());
+                    recetas.add(aux);
+
+
+                }
+                Log.d("hectorr", recetas.toString());
+                adapterListaRec.setRecetas(recetas);
+                adapterListaRec.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        recetas=new ArrayList<>();
+        rVLM=new LinearLayoutManager(getContext());
+        recyclerRecetas.setLayoutManager(rVLM);
+        adapterListaRec=new AdapterListarRecetas(recetas,getContext());
+        recyclerRecetas.setAdapter(adapterListaRec);
+
         return v;
     }
 
