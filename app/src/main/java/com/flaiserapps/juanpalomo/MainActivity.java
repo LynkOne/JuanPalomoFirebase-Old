@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private boolean isShown = false;
     private LinearLayout menuLayout;
+    private DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         //menuLayout=(LinearLayout) findViewById(R.id.);
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //final DrawerLayout
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -85,15 +87,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        transaction=fm.beginTransaction();
         switch (menuItem.getItemId()){
+
             case R.id.menu_explora:
                 //Toast.makeText(this, "pulsado menu explorar recetas", Toast.LENGTH_SHORT).show();
-                if(recyclerRecetasFragment.isVisible()){
-                    Toast.makeText(this, "visible", Toast.LENGTH_SHORT).show();
-                }
+                transaction.replace(fl.getId(), recyclerRecetasFragment);
+                transaction.addToBackStack("");
+                transaction.commit();
+                vaciarSeleccionNavView();
+                navigationView.getMenu().getItem(0).setChecked(true);
                 break;
             case R.id.menu_recetas_ing:
                 //Toast.makeText(this, "pulsado menu recetas por ingredientes", Toast.LENGTH_SHORT).show();
+                transaction.replace(fl.getId(), recyclerRecetasFragment);
+                transaction.addToBackStack("");
+                transaction.commit();
+                vaciarSeleccionNavView();
+                navigationView.getMenu().getItem(1).setChecked(true);
                 break;
             case R.id.menu_almacen:
                 //Toast.makeText(this, "pulsado menu almacen", Toast.LENGTH_SHORT).show();
@@ -101,15 +112,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_configuracion:
                 break;
             case R.id.menu_acercade:
-                transaction=fm.beginTransaction();
                 transaction.replace(fl.getId(), acercaDeFragment);
+                transaction.addToBackStack("");
                 transaction.commit();
                 vaciarSeleccionNavView();
                 navigationView.getMenu().getItem(4).setChecked(true);
+
                 break;
             default:
                 break;
         }
+        drawer.closeDrawer(GravityCompat.START);
         return false;
     }
     private void vaciarSeleccionNavView(){
