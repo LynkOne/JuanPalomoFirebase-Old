@@ -49,8 +49,8 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         public RecetaViewHolder(@NonNull View itemView){
             super(itemView);
 
-            nombreReceta=(TextView) itemView.findViewById(R.id.mod_nombrereceta);
-            descReceta=(TextView) itemView.findViewById(R.id.mod_descreceta);
+            nombreReceta=(TextView) itemView.findViewById(R.id.tv_nombrereceta);
+            descReceta=(TextView) itemView.findViewById(R.id.tv_descreceta);
 
         }
     }

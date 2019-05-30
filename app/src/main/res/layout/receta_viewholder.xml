@@ -15,51 +15,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-
-        <TextView
-            android:id="@+id/tv_modnombrereceta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nombredospuntos"
-            app:layout_constraintEnd_toStartOf="@id/mod_nombrereceta"
-            app:layout_constraintTop_toTopOf="@id/mod_nombrereceta"
-            app:layout_constraintBottom_toBottomOf="@id/mod_nombrereceta"/>
-
-        <TextView
-            android:id="@+id/mod_nombrereceta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType=""
-            app:layout_constraintBottom_toTopOf="@id/mod_descreceta"
-            app:layout_constraintStart_toStartOf="@id/mod_descreceta"
+        <ImageView
             app:layout_constraintTop_toTopOf="parent"
-            tools:targetApi="o" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/imageReceta"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.25"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/tv_moddescrecera"
+            android:id="@+id/tv_titulonombrereceta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/descripciondospuntos"
-
-            app:layout_constraintEnd_toStartOf="@id/mod_descreceta"
-            app:layout_constraintTop_toTopOf="@id/mod_descreceta"
-            app:layout_constraintBottom_toBottomOf="@id/mod_descreceta"/>
+            android:layout_marginStart="30dp"
+            android:text="@string/nombredospuntos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imageReceta"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/mod_descreceta"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_nombrereceta"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.65"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginTop="5dp"
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mod_nombrereceta"
+            app:layout_constraintStart_toStartOf="@id/tv_titulonombrereceta"
+            app:layout_constraintTop_toBottomOf="@id/tv_titulonombrereceta"
             tools:targetApi="o" />
+
+        <TextView
+            android:id="@+id/tv_titulodescrecera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/descripciondospuntos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/tv_titulonombrereceta"
+            app:layout_constraintTop_toBottomOf="@id/tv_nombrereceta" />
+
+        <TextView
+            android:id="@+id/tv_descreceta"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.65"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType=""
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_titulodescrecera"
+            app:layout_constraintStart_toStartOf="@id/tv_titulonombrereceta"
+            tools:targetApi="o" />
+
+
 
     </android.support.constraint.ConstraintLayout>
 
