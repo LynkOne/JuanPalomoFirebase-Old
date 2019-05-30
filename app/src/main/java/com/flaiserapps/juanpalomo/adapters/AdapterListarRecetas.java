@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.flaiserapps.juanpalomo.R;
 import com.flaiserapps.juanpalomo.model.Receta;
@@ -43,13 +44,13 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     //Inicio de la clase RecetaViewHolder
     public static class RecetaViewHolder extends RecyclerView.ViewHolder{
 
-        EditText nombreReceta, descReceta;
+        TextView nombreReceta, descReceta;
 
         public RecetaViewHolder(@NonNull View itemView){
             super(itemView);
 
-            nombreReceta=(EditText) itemView.findViewById(R.id.mod_nombrereceta);
-            descReceta=(EditText) itemView.findViewById(R.id.mod_descreceta);
+            nombreReceta=(TextView) itemView.findViewById(R.id.mod_nombrereceta);
+            descReceta=(TextView) itemView.findViewById(R.id.mod_descreceta);
 
         }
     }

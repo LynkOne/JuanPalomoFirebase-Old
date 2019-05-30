@@ -8,4 +8,10 @@
     <string name="app_desc">Recetas de cocina comunitarias</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="versi_n_1_0_0">Versión: 1.0.0 \n</string>
+    <string name="acerca_de">Acerca de...</string>
+    <string name="_30_05_2019">30/05/2019</string>
+    <string name="fecha_de_la_versi_n">Fecha de la versión:</string>
+    <string name="h_ctor_moragues">Héctor Moragues \n</string>
+    <string name="desarrollado_por">Desarrollado por:\n</string>
 </resources>

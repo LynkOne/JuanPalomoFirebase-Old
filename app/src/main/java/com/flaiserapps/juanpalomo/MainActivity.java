@@ -21,6 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FrameLayout fl;
     private Fragment recyclerRecetasFragment;
+    private Fragment acercaDeFragment;
     private FragmentTransaction transaction;
     private FragmentManager fm;
     private Toolbar toolbar;
@@ -42,12 +43,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         fm=getSupportFragmentManager();
         transaction=fm.beginTransaction();
         fl=(FrameLayout) findViewById(R.id.fragment_main);
         recyclerRecetasFragment= new RecyclerRecetasFragment();
+        acercaDeFragment=new AcercaDe();
         transaction.replace(fl.getId(), recyclerRecetasFragment);
         transaction.commit();
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
 
@@ -79,9 +84,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         switch (menuItem.getItemId()){
             case R.id.menu_explora:
                 //Toast.makeText(this, "pulsado menu explorar recetas", Toast.LENGTH_SHORT).show();
+                if(recyclerRecetasFragment.isVisible()){
+                    Toast.makeText(this, "visible", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_recetas_ing:
                 //Toast.makeText(this, "pulsado menu recetas por ingredientes", Toast.LENGTH_SHORT).show();
@@ -92,10 +101,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_configuracion:
                 break;
             case R.id.menu_acercade:
+                transaction=fm.beginTransaction();
+                transaction.replace(fl.getId(), acercaDeFragment);
+                transaction.commit();
+                vaciarSeleccionNavView();
+                navigationView.getMenu().getItem(4).setChecked(true);
                 break;
             default:
                 break;
         }
         return false;
+    }
+    private void vaciarSeleccionNavView(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(false);
+        navigationView.getMenu().getItem(1).setChecked(false);
+        navigationView.getMenu().getItem(2).setChecked(false);
+        navigationView.getMenu().getItem(3).setChecked(false);
+        navigationView.getMenu().getItem(4).setChecked(false);
+
     }
 }
