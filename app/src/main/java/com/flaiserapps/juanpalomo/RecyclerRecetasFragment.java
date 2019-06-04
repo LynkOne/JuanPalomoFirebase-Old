@@ -3,6 +3,7 @@ package com.flaiserapps.juanpalomo;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +39,8 @@ public class RecyclerRecetasFragment extends Fragment {
     private RecyclerView.LayoutManager rVLM;
     private ArrayList<Receta> recetas;
     private DatabaseReference dbr;
+
+    private FloatingActionButton fab;
 
 
     public RecyclerRecetasFragment() {
@@ -81,6 +84,18 @@ public class RecyclerRecetasFragment extends Fragment {
 
         recyclerRecetas=(RecyclerView) v.findViewById(R.id.recycler_recetas);
         dbr= FirebaseDatabase.getInstance().getReference("recetas");
+        fab=(FloatingActionButton) v.findViewById(R.id.enviarReceta);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
+        recetas=new ArrayList<>();
+        rVLM=new LinearLayoutManager(getContext());
+        recyclerRecetas.setLayoutManager(rVLM);
+        adapterListaRec=new AdapterListarRecetas(recetas,getContext());
+        recyclerRecetas.setAdapter(adapterListaRec);
         Log.d("hectorrr", "accediendo a Firebase ruta: "+dbr.toString());
         dbr.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,12 +123,6 @@ public class RecyclerRecetasFragment extends Fragment {
 
             }
         });
-        recetas=new ArrayList<>();
-        rVLM=new LinearLayoutManager(getContext());
-        recyclerRecetas.setLayoutManager(rVLM);
-        adapterListaRec=new AdapterListarRecetas(recetas,getContext());
-        recyclerRecetas.setAdapter(adapterListaRec);
-
         return v;
     }
 

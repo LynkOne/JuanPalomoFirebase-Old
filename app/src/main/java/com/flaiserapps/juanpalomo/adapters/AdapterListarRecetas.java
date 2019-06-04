@@ -1,14 +1,23 @@
 package com.flaiserapps.juanpalomo.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.flaiserapps.juanpalomo.DetallesReceta;
 import com.flaiserapps.juanpalomo.R;
 import com.flaiserapps.juanpalomo.model.Receta;
 
@@ -18,7 +27,6 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
     private ArrayList<Receta> recetas;
     private Context contexto;
-
     //Inicio getters and setters
 
     public ArrayList<Receta> getRecetas() {
@@ -43,15 +51,15 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
     //Inicio de la clase RecetaViewHolder
     public static class RecetaViewHolder extends RecyclerView.ViewHolder{
+        private CardView cardView;
 
         TextView nombreReceta, descReceta;
 
         public RecetaViewHolder(@NonNull View itemView){
             super(itemView);
-
+            cardView = (CardView) itemView.findViewById(R.id.receta_card_view);
             nombreReceta=(TextView) itemView.findViewById(R.id.tv_nombrereceta);
             descReceta=(TextView) itemView.findViewById(R.id.tv_descreceta);
-
         }
     }
     //Fin de la clase RecetaViewHolder
@@ -73,13 +81,23 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecetaViewHolder recetaViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final RecetaViewHolder recetaViewHolder, int i) {
         //Java...
-
         final int pos=i;
         Receta recAux=recetas.get(i);
         recetaViewHolder.nombreReceta.setText(recAux.getNombre());
         recetaViewHolder.descReceta.setText(recAux.getDescripcion());
+        recetaViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //Crear subactivity
+                Intent i = new Intent(contexto, DetallesReceta.class);
+                Bundle bReceta=new Bundle();
+                bReceta.putParcelable(contexto.getResources().getString(R.string.OBJETO_RECETA), recetas.get(pos));
+                i.putExtras(bReceta);
+                contexto.startActivity(i);
+            }
+        });
 
     }
 

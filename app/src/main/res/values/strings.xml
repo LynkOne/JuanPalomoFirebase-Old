@@ -4,6 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nombredospuntos">Nombre:</string>
+    <string name="recetadospuntos">Receta:</string>
     <string name="descripciondospuntos">Descripción:</string>
     <string name="app_desc">Recetas de cocina comunitarias</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -14,4 +15,5 @@
     <string name="fecha_de_la_versi_n">Fecha de la versión:</string>
     <string name="h_ctor_moragues">Héctor Moragues \n</string>
     <string name="desarrollado_por">Desarrollado por:\n</string>
+    <string name="OBJETO_RECETA">receta</string>
 </resources>
