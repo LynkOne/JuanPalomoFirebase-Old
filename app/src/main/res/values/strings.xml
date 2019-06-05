@@ -16,4 +16,5 @@
     <string name="h_ctor_moragues">Héctor Moragues \n</string>
     <string name="desarrollado_por">Desarrollado por:\n</string>
     <string name="OBJETO_RECETA">receta</string>
+    <string name="OBJETO_INGREDIENTES">ingredientes</string>
 </resources>
