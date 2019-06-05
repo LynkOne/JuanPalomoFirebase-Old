@@ -62,12 +62,14 @@ public class DetallesRecetaFragment extends Fragment {
 
         titulo_receta.setText(receta.getNombre());
         descripcion_receta.setText(receta.getDescripcion());
-
-        for(int i=0;i==receta.getIngredientes().size();i++){
-            for(int x=0;x==ingredientes.getIngredientes().size();x++){
-                Log.d("hectorrr", "Ingredientes: "+ingredientes.getIngredientes().get(x).getNombre());
-                if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId())){
+        Log.d("hectorrr", "Rellenando ingredientes....");
+        for(int i=0;i<receta.getIngredientes().size();i++){
+            Log.d("hectorrr", receta.getIngredientes().get(i));
+            for(int x=0;x<ingredientes.getIngredientes().size();x++){
+                Log.d("hectorr", "Buscando ingredientes...: "+ingredientes.getIngredientes().get(x).getId().replace("\"", ""));
+                if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId().replace("\"", ""))){
                     str_ingredientes=str_ingredientes+ingredientes.getIngredientes().get(x).getNombre()+"\n";
+                    Log.d("hectorrr", "Ingredientes str: "+str_ingredientes);
                 }
             }
         }
