@@ -1,24 +1,21 @@
 package com.flaiserapps.juanpalomo.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.flaiserapps.juanpalomo.DetallesReceta;
 import com.flaiserapps.juanpalomo.R;
+import com.flaiserapps.juanpalomo.RecyclerRecetasFragment;
 import com.flaiserapps.juanpalomo.model.Receta;
 
 import java.util.ArrayList;
@@ -26,7 +23,10 @@ import java.util.ArrayList;
 public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRecetas.RecetaViewHolder>{
 
     private ArrayList<Receta> recetas;
-    private Context contexto;
+    private RecyclerRecetasFragment contexto;
+    private recetasInteractionListener interfaz;
+
+
     //Inicio getters and setters
 
     public ArrayList<Receta> getRecetas() {
@@ -37,15 +37,13 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         recetas = recetas;
     }
 
-    public Context getContexto() {
+    public RecyclerRecetasFragment getContexto() {
         return contexto;
     }
 
-    public void setContexto(Context contexto) {
+    public void setContexto(RecyclerRecetasFragment contexto) {
         this.contexto = contexto;
     }
-
-
 
     //Fin getters and setters
 
@@ -60,6 +58,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
             cardView = (CardView) itemView.findViewById(R.id.receta_card_view);
             nombreReceta=(TextView) itemView.findViewById(R.id.tv_nombrereceta);
             descReceta=(TextView) itemView.findViewById(R.id.tv_descreceta);
+
         }
     }
     //Fin de la clase RecetaViewHolder
@@ -67,9 +66,14 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     //Constructor de la clase
 
 
-    public AdapterListarRecetas(ArrayList<Receta> recetas, Context contexto) {
+    public AdapterListarRecetas(ArrayList<Receta> recetas, RecyclerRecetasFragment contexto) {
         this.recetas = recetas;
         this.contexto = contexto;
+        try{
+            interfaz=(recetasInteractionListener) contexto;
+        }catch (ClassCastException ex){
+            Log.d("hectorrr","error en la interfaz: "+ex.getMessage());
+        }
     }
 
     @NonNull
@@ -87,15 +91,22 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         Receta recAux=recetas.get(i);
         recetaViewHolder.nombreReceta.setText(recAux.getNombre());
         recetaViewHolder.descReceta.setText(recAux.getDescripcion());
+
+
+
         recetaViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                //Crear subactivity
-                Intent i = new Intent(contexto, DetallesReceta.class);
-                Bundle bReceta=new Bundle();
-                bReceta.putParcelable(contexto.getResources().getString(R.string.OBJETO_RECETA), recetas.get(pos));
-                i.putExtras(bReceta);
-                contexto.startActivity(i);
+               // Intent i = new Intent(contexto, DetallesReceta.class);
+               // Bundle bReceta=new Bundle();
+               // bReceta.putParcelable(contexto.getResources().getString(R.string.OBJETO_RECETA), recetas.get(pos));
+               // i.putExtras(bReceta);
+               // contexto.startActivity(i);
+
+
+                //Cambiar fragment a detalles receta
+                interfaz.expandirReceta();
             }
         });
 
@@ -106,4 +117,11 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         //Tiene que devolver el numero de recetas del arraylist para indicarselo al recyclerview
         return recetas.size();
     }
+
+
+    public interface recetasInteractionListener{
+        void expandirReceta();
+    }
+
 }
+

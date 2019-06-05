@@ -18,10 +18,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerRecetasFragment.recetasFragmentInteractionListener {
     private FrameLayout fl;
     private Fragment recyclerRecetasFragment;
     private Fragment acercaDeFragment;
+    private Fragment detallesRecetaFragment;
     private FragmentTransaction transaction;
     private FragmentManager fm;
     private Toolbar toolbar;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fl=(FrameLayout) findViewById(R.id.fragment_main);
         recyclerRecetasFragment= new RecyclerRecetasFragment();
         acercaDeFragment=new AcercaDe();
+
         transaction.replace(fl.getId(), recyclerRecetasFragment);
         transaction.commit();
 
@@ -133,5 +135,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(3).setChecked(false);
         navigationView.getMenu().getItem(4).setChecked(false);
 
+    }
+
+    @Override
+    public void expandirReceta() {
+        detallesRecetaFragment=new DetallesRecetaFragment();
+        transaction=fm.beginTransaction();
+        transaction.replace(fl.getId(), detallesRecetaFragment);
+        transaction.addToBackStack("");
+        transaction.commit();
     }
 }

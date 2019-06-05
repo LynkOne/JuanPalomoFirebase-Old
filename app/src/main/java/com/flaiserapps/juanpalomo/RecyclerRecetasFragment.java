@@ -29,7 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class RecyclerRecetasFragment extends Fragment {
+public class RecyclerRecetasFragment extends Fragment implements AdapterListarRecetas.recetasInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,6 +48,7 @@ public class RecyclerRecetasFragment extends Fragment {
     private DatabaseReference dbrRecetas;
     private DatabaseReference dbrIngredientes;
     private boolean ingredientesCargados=false;
+    private recetasFragmentInteractionListener interfaz;
 
     private FloatingActionButton fab;
 
@@ -120,7 +121,7 @@ public class RecyclerRecetasFragment extends Fragment {
         ingredientes=new ArrayList<>();
         rVLM=new LinearLayoutManager(getContext());
         recyclerRecetas.setLayoutManager(rVLM);
-        adapterListaRec=new AdapterListarRecetas(recetas,getContext());
+        adapterListaRec=new AdapterListarRecetas(recetas,this);
         recyclerRecetas.setAdapter(adapterListaRec);
         Log.d("hectorrr", "accediendo a Firebase ruta: "+dbrRecetas.toString());
         dbrRecetas.addValueEventListener(new ValueEventListener() {
@@ -185,7 +186,12 @@ public class RecyclerRecetasFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        if (context instanceof recetasFragmentInteractionListener) {
+            interfaz = (recetasFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement recetasFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -195,4 +201,12 @@ public class RecyclerRecetasFragment extends Fragment {
     }
 
 
+    @Override
+    public void expandirReceta() {
+        interfaz.expandirReceta();
+    }
+
+    public interface recetasFragmentInteractionListener{
+        void expandirReceta();
+    }
 }
