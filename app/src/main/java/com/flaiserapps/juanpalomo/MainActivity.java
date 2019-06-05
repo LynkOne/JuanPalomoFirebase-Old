@@ -18,6 +18,9 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.flaiserapps.juanpalomo.model.Ingredientes;
+import com.flaiserapps.juanpalomo.model.Receta;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerRecetasFragment.recetasFragmentInteractionListener {
     private FrameLayout fl;
     private Fragment recyclerRecetasFragment;
@@ -138,8 +141,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void expandirReceta() {
-        detallesRecetaFragment=new DetallesRecetaFragment();
+    public void expandirRecetaFragment(Receta receta, Ingredientes ingredientes) {
+        detallesRecetaFragment=DetallesRecetaFragment.newInstance(receta, ingredientes);
         transaction=fm.beginTransaction();
         transaction.replace(fl.getId(), detallesRecetaFragment);
         transaction.addToBackStack("");

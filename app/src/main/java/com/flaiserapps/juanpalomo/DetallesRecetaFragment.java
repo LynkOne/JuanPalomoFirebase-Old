@@ -4,25 +4,27 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flaiserapps.juanpalomo.model.Ingrediente;
+import com.flaiserapps.juanpalomo.model.Ingredientes;
 import com.flaiserapps.juanpalomo.model.Receta;
 
 
 public class DetallesRecetaFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_RECETA = "receta";
+    private static final String ARG_INGREDIENTES = "ingredientes";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private Receta receta;
+    private Ingredientes ingredientes;
+    private String str_ingredientes="Ingredientes: \n";
     private TextView titulo_receta, descripcion_receta, ingredientes_receta, elaboracion_receta;
 
     public DetallesRecetaFragment() {
@@ -30,20 +32,11 @@ public class DetallesRecetaFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetallesRecetaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DetallesRecetaFragment newInstance(String param1, String param2) {
+    public static DetallesRecetaFragment newInstance(Receta receta, Ingredientes ingredientes) {
         DetallesRecetaFragment fragment = new DetallesRecetaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_RECETA, receta);
+        args.putParcelable(ARG_INGREDIENTES, ingredientes);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +45,8 @@ public class DetallesRecetaFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            receta = getArguments().getParcelable(ARG_RECETA);
+            ingredientes = getArguments().getParcelable(ARG_INGREDIENTES);
         }
     }
 
@@ -66,6 +59,20 @@ public class DetallesRecetaFragment extends Fragment {
         descripcion_receta=(TextView) v.findViewById(R.id.textView_descripcion_detalle);
         ingredientes_receta=(TextView) v.findViewById(R.id.textView_ingredientes_detalle);
         elaboracion_receta=(TextView) v.findViewById(R.id.textView_elaboracion_detalle);
+
+        titulo_receta.setText(receta.getNombre());
+        descripcion_receta.setText(receta.getDescripcion());
+
+        for(int i=0;i==receta.getIngredientes().size();i++){
+            for(int x=0;x==ingredientes.getIngredientes().size();x++){
+                Log.d("hectorrr", "Ingredientes: "+ingredientes.getIngredientes().get(x).getNombre());
+                if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId())){
+                    str_ingredientes=str_ingredientes+ingredientes.getIngredientes().get(x).getNombre()+"\n";
+                }
+            }
+        }
+        ingredientes_receta.setText(str_ingredientes);
+        elaboracion_receta.setText(receta.getElaboracion());
         return v;
     }
 

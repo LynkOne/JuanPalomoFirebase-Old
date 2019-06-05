@@ -106,7 +106,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
 
                 //Cambiar fragment a detalles receta
-                interfaz.expandirReceta();
+                interfaz.expandirReceta(recetas.get(pos));
             }
         });
 
@@ -120,7 +120,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
 
 
     public interface recetasInteractionListener{
-        void expandirReceta();
+        void expandirReceta(Receta receta);
     }
 
 }

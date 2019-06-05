@@ -202,11 +202,17 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
 
 
     @Override
-    public void expandirReceta() {
-        interfaz.expandirReceta();
+    public void expandirReceta(Receta receta) {
+        if(ingredientesCargados){
+            interfaz.expandirRecetaFragment(receta, ingredientesClase);
+        }
+        else{
+            Toast.makeText(getContext(), "Error, intentalo de nuevo en unos segundos", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public interface recetasFragmentInteractionListener{
-        void expandirReceta();
+        void expandirRecetaFragment(Receta receta, Ingredientes ingredientes);
     }
 }
