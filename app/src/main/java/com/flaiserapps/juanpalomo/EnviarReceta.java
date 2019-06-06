@@ -25,7 +25,7 @@ public class EnviarReceta extends AppCompatActivity {
         adapterIngr=new AdapterIngredientes(ingredientes,getApplicationContext());
         //Obtener ingredientes del bundle
         Bundle b= getIntent().getExtras();
-        ingredientes=b.getParcelable(getResources().getString(R.string.OBJETO_INGREDIENTES));
+        //ingredientes=b.getParcelable(getResources().getString(R.string.OBJETO_INGREDIENTES));
 
     }
 }
