@@ -1,6 +1,7 @@
 package com.flaiserapps.juanpalomo.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,13 +48,16 @@ public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results=new FilterResults();
             List<Ingrediente> suggestions=new ArrayList<>();
-            if (constraint==null || constraint.length()==0){
+            if (constraint==null || constraint.length()<1){
                 suggestions.addAll(ingredientesListFull);
+                Log.d("hectorr", "añadiendo todos los ingredientes al autocomplete");
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
+                Log.d("hectorr", "tamaño de la lista: "+ingredientesListFull.size());
                 for (Ingrediente item: ingredientesListFull){
                     if(item.getNombre().toLowerCase().contains(filterPattern)){
                         suggestions.add(item);
+                        Log.d("hectorr", "añadiendo "+item.getNombre()+" al autocomplete");
                     }
                 }
             }

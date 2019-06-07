@@ -25,6 +25,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
     private ArrayList<Ingrediente> ingredientes_receta;
     private ArrayList<Ingrediente> ingredientes;
     private Context contexto;
+    private AutoCompleteIngredienteAdapter adapter;
     //Inicio getters and setters
 
     public ArrayList<Ingrediente> getIngredientes() {
@@ -71,6 +72,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
         this.ingredientes = ingredientes;
         this.contexto = contexto;
         this.ingredientes_receta=ingredientes_receta;
+        this.adapter=new AutoCompleteIngredienteAdapter(contexto, ingredientes);
     }
 
 
@@ -86,7 +88,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
     public void onBindViewHolder(@NonNull final IngredientesViewHolder ingredientesViewHolder, int i) {
         //Java...
         final int pos=i;
-        AutoCompleteIngredienteAdapter adapter=new AutoCompleteIngredienteAdapter(contexto, ingredientes);
+
         ingredientesViewHolder.nombrIngrediente.setAdapter(adapter);
         ingredientesViewHolder.nombrIngrediente.setText(ingredientes_receta.get(i).getNombre());
         ingredientesViewHolder.nombrIngrediente.addTextChangedListener(new TextWatcher() {
