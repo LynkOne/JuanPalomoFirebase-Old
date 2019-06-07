@@ -106,7 +106,7 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
                 Intent i = new Intent(getContext(), EnviarReceta.class);
                 Bundle bIngredientes=new Bundle();
                 if(ingredientesCargados){
-                    bIngredientes.putParcelable(getResources().getString(R.string.OBJETO_INGREDIENTES), ingredientesClase);
+                    bIngredientes.putParcelableArrayList(getResources().getString(R.string.OBJETO_INGREDIENTES), ingredientes);
                     i.putExtras(bIngredientes);
                     pB.setVisibility(View.INVISIBLE);
                     startActivity(i);
