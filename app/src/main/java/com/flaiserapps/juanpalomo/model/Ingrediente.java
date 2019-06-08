@@ -61,4 +61,12 @@ public class Ingrediente implements Parcelable {
             return new Ingrediente[size];
         }
     };
+
+
+    @Override
+    public String toString() {
+        String aux="ID: "+this.id+" Nombre ingrediente: "+this.nombre;
+
+        return aux;
+    }
 }

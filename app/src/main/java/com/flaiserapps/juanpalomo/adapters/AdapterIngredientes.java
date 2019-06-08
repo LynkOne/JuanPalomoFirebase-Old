@@ -114,6 +114,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
                 try{
                     ingredientes_receta.get(pos).setNombre(ingredientesViewHolder.nombrIngrediente.getText().toString());
                     ingredientes_receta.get(pos).setId(ingredientesViewHolder.nombrIngrediente.getTag().toString());
+                    Log.d("hectorr", "Guardando "+ingredientesViewHolder.nombrIngrediente.getText().toString()+" con el tag "+ingredientesViewHolder.nombrIngrediente.getTag().toString()+" en el arraylist");
                 }catch (Exception ex){
                     Log.d("hectorr", "error al guardar el contenido del editext en el arraylist :"+ex.getLocalizedMessage());
                 }

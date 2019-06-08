@@ -68,11 +68,17 @@ public class EnviarReceta extends AppCompatActivity {
             ArrayList<String> ingredientes_receta_aux=new ArrayList<>();
                 for (Ingrediente ingr:ingredientes_receta) {
                     ingredientes_receta_aux.add(ingr.getId());
+                    Log.d("hectorr", ingr.toString());
+
                 }
                 Receta rec_aux=new Receta(nombre_Receta.getText().toString(),descripcion_Receta.getText().toString(),elaboracion_Receta.getText().toString(),ingredientes_receta_aux );
                 //Apuntamos al nodo productos
                 DatabaseReference dbr= FirebaseDatabase.getInstance().getReference("recetas");
-                Log.d("hecotrr", "Database Reference: "+dbr.toString());
+                Log.d("hectorr", "Database Reference: "+dbr.toString()+
+                        "\nReceta "+rec_aux.getNombre()+
+                        "\nDescripcion: "+rec_aux.getDescripcion()+
+                        "\nElaboracion :"+rec_aux.getElaboracion()+
+                        "\nIngredientes:"+ingredientes_receta_aux.get(0)+" "+adapterIngr.getIngredientes_receta().get(0).getNombre());
                 //Generar uid para la receta (despues de database reference)
                 String recetaUid=dbr.push().getKey();
                 //Si no existe lo crea, si existe lo machaca

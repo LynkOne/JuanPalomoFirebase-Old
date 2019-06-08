@@ -39,6 +39,7 @@ public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
         if(ingrediente!=null){
             tvNombreIngrediente.setText(ingrediente.getNombre());
             tvNombreIngrediente.setTag(ingrediente.getId());
+            Log.d("hectorr","Set Tag del id del ingrediente"+ingrediente.getId()+" Tag añadido: "+tvNombreIngrediente.getTag());
         }
         return convertView;
     }
