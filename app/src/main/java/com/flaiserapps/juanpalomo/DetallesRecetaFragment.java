@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Ingredientes;
@@ -63,18 +64,24 @@ public class DetallesRecetaFragment extends Fragment {
         titulo_receta.setText(receta.getNombre());
         descripcion_receta.setText(receta.getDescripcion());
         Log.d("hectorrr", "Rellenando ingredientes....");
-        for(int i=0;i<receta.getIngredientes().size();i++){
-            //Log.d("hectorrr", receta.getIngredientes().get(i));
-            for(int x=0;x<ingredientes.getIngredientes().size();x++){
-                Log.d("hectorr", "Buscando ingredientes...: "+ingredientes.getIngredientes().get(x).getId().replace("\"", ""));
-                if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId().replace("\"", ""))){
-                    str_ingredientes=str_ingredientes+ingredientes.getIngredientes().get(x).getNombre()+"\n";
-                    Log.d("hectorrr", "Ingredientes str: "+str_ingredientes);
+        try{
+            for(int i=0;i<receta.getIngredientes().size();i++){
+                //Log.d("hectorrr", receta.getIngredientes().get(i));
+                for(int x=0;x<ingredientes.getIngredientes().size();x++){
+                    Log.d("hectorr", "Buscando ingredientes...: "+ingredientes.getIngredientes().get(x).getId().replace("\"", ""));
+                    if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId().replace("\"", ""))){
+                        str_ingredientes=str_ingredientes+ingredientes.getIngredientes().get(x).getNombre()+"\n";
+                        Log.d("hectorrr", "Ingredientes str: "+str_ingredientes);
+                    }
                 }
             }
+            ingredientes_receta.setText(str_ingredientes);
+        }catch (Exception ex){
+            Log.d("hectorr","Error al rellenar ingredientes");
+            Toast.makeText(getContext(), "Error al mostrar los ingredientes", Toast.LENGTH_SHORT).show();
         }
-        ingredientes_receta.setText(str_ingredientes);
-        elaboracion_receta.setText(receta.getElaboracion());
+
+        elaboracion_receta.setText("Elaboración: \n"+receta.getElaboracion());
         return v;
     }
 

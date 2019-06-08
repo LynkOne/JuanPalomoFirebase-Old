@@ -99,11 +99,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
-                    ingredientes_receta.get(pos).setNombre(ingredientesViewHolder.nombrIngrediente.getText().toString());
-                }catch (Exception ex){
-                    Log.d("hectorr", "error al guardar el contenido del editext en el arraylist :"+ex.getLocalizedMessage());
-                }
+
 
             }
 
@@ -115,8 +111,15 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
         ingredientesViewHolder.nombrIngrediente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try{
+                    ingredientes_receta.get(pos).setNombre(ingredientesViewHolder.nombrIngrediente.getText().toString());
+                    ingredientes_receta.get(pos).setId(ingredientesViewHolder.nombrIngrediente.getTag().toString());
+                }catch (Exception ex){
+                    Log.d("hectorr", "error al guardar el contenido del editext en el arraylist :"+ex.getLocalizedMessage());
+                }
                 ingredientesViewHolder.nombrIngrediente.setEnabled(false);
                 ingredientesViewHolder.nombrIngrediente.clearFocus();
+                ingredientesViewHolder.nombrIngrediente.setFocusable(false);
             }
         });
 
@@ -137,9 +140,11 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
         });
         if(ingredientesViewHolder.nombrIngrediente.getText().length()==0){
             ingredientesViewHolder.nombrIngrediente.setEnabled(true);
+            ingredientesViewHolder.nombrIngrediente.setFocusable(true);
         }else {
             ingredientesViewHolder.nombrIngrediente.setEnabled(false);
             ingredientesViewHolder.nombrIngrediente.clearFocus();
+            ingredientesViewHolder.nombrIngrediente.setFocusable(false);
         }
 
     }

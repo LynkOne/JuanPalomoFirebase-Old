@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.flaiserapps.juanpalomo.adapters.AdapterIngredientes;
 import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Receta;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -63,7 +65,20 @@ public class EnviarReceta extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             ingredientes_receta=adapterIngr.getIngredientes_receta();
-                Receta rec_aux=new Receta();
+            ArrayList<String> ingredientes_receta_aux=new ArrayList<>();
+                for (Ingrediente ingr:ingredientes_receta) {
+                    ingredientes_receta_aux.add(ingr.getId());
+                }
+                Receta rec_aux=new Receta(nombre_Receta.getText().toString(),descripcion_Receta.getText().toString(),elaboracion_Receta.getText().toString(),ingredientes_receta_aux );
+                //Apuntamos al nodo productos
+                DatabaseReference dbr= FirebaseDatabase.getInstance().getReference("recetas");
+                Log.d("hecotrr", "Database Reference: "+dbr.toString());
+                //Generar uid para la receta (despues de database reference)
+                String recetaUid=dbr.push().getKey();
+                //Si no existe lo crea, si existe lo machaca
+                dbr.child(recetaUid).setValue(rec_aux);
+                setResult(RESULT_OK);
+                finish();
             }
         });
     }
