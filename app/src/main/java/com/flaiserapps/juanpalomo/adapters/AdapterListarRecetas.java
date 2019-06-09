@@ -26,7 +26,6 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     private RecyclerRecetasFragment contexto;
     private recetasInteractionListener interfaz;
 
-
     //Inicio getters and setters
 
     public ArrayList<Receta> getRecetas() {

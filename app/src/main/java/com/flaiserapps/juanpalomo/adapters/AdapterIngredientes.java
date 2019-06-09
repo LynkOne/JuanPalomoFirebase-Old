@@ -21,11 +21,15 @@ import com.flaiserapps.juanpalomo.model.Ingrediente;
 
 import java.util.ArrayList;
 
-public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngredientes.IngredientesViewHolder> {
+public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngredientes.IngredientesViewHolder > implements AutoCompleteIngredienteAdapter.autoCompleteListener{
     private ArrayList<Ingrediente> ingredientes_receta;
     private ArrayList<Ingrediente> ingredientes;
     private Context contexto;
     private AutoCompleteIngredienteAdapter adapter;
+
+    private String tag;
+    private boolean tagNuevo;
+
     //Inicio getters and setters
 
     public ArrayList<Ingrediente> getIngredientes() {
@@ -48,8 +52,14 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
         return ingredientes_receta;
     }
 
+    @Override
+    public void setTag(String tag) {
+        this.tag = tag;
+        this.tagNuevo = true;
+    }
+
     //Inicio de la clase IngredientesViewHolder
-    public static class IngredientesViewHolder extends RecyclerView.ViewHolder{
+    public static class IngredientesViewHolder extends RecyclerView.ViewHolder {
 
     public AutoCompleteTextView nombrIngrediente;
     public ImageButton deleteIngrediente;
@@ -62,6 +72,8 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
 
 
         }
+
+
     }
     //Fin de la clase IngredientesViewHolder
 
@@ -72,7 +84,7 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
         this.ingredientes = ingredientes;
         this.contexto = contexto;
         this.ingredientes_receta=ingredientes_receta;
-        this.adapter=new AutoCompleteIngredienteAdapter(contexto, ingredientes);
+        this.adapter=new AutoCompleteIngredienteAdapter(contexto, ingredientes, this);
     }
 
 
@@ -91,30 +103,20 @@ public class AdapterIngredientes extends RecyclerView.Adapter<AdapterIngrediente
 
         ingredientesViewHolder.nombrIngrediente.setAdapter(adapter);
         ingredientesViewHolder.nombrIngrediente.setText(ingredientes_receta.get(i).getNombre());
-        ingredientesViewHolder.nombrIngrediente.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         ingredientesViewHolder.nombrIngrediente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try{
                     ingredientes_receta.get(pos).setNombre(ingredientesViewHolder.nombrIngrediente.getText().toString());
-                    ingredientes_receta.get(pos).setId(ingredientesViewHolder.nombrIngrediente.getTag().toString());
-                    Log.d("hectorr", "Guardando "+ingredientesViewHolder.nombrIngrediente.getText().toString()+" con el tag "+ingredientesViewHolder.nombrIngrediente.getTag().toString()+" en el arraylist");
+
+                    if (tagNuevo && tag!=null && tag.trim()!="")
+                    {
+                        Log.d("hectorr", "holaquetal: "+tag);
+                        ingredientes_receta.get(pos).setId(""+tag);
+                        tagNuevo = false;
+                    }
+
+                    Log.d("hectorr", "Guardando "+ingredientesViewHolder.nombrIngrediente.getText().toString()+" en el arraylist");
                 }catch (Exception ex){
                     Log.d("hectorr", "error al guardar el contenido del editext en el arraylist :"+ex.getLocalizedMessage());
                 }

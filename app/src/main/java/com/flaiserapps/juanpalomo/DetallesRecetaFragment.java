@@ -69,7 +69,7 @@ public class DetallesRecetaFragment extends Fragment {
                 //Log.d("hectorrr", receta.getIngredientes().get(i));
                 for(int x=0;x<ingredientes.getIngredientes().size();x++){
                     Log.d("hectorr", "Buscando ingredientes...: "+ingredientes.getIngredientes().get(x).getId().replace("\"", ""));
-                    if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId().replace("\"", ""))){
+                    if(receta.getIngredientes().get(i).equals(ingredientes.getIngredientes().get(x).getId())){
                         str_ingredientes=str_ingredientes+ingredientes.getIngredientes().get(x).getNombre()+"\n";
                         Log.d("hectorrr", "Ingredientes str: "+str_ingredientes);
                     }

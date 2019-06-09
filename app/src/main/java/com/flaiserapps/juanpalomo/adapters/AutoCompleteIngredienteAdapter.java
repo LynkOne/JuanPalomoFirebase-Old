@@ -17,9 +17,16 @@ import java.util.List;
 
 public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
     private List<Ingrediente> ingredientesListFull;
-    public AutoCompleteIngredienteAdapter(Context context, List ingredientes) {
+    private autoCompleteListener interfaz;
+    public AutoCompleteIngredienteAdapter(Context context, List ingredientes, AdapterIngredientes contextadaptering) {
         super(context, 0, ingredientes);
         ingredientesListFull=new ArrayList<>(ingredientes);
+        try{
+            interfaz=(autoCompleteListener) contextadaptering;
+            Log.d("hectorrrr","interfaz chachi");
+        }catch (ClassCastException ex){
+            Log.d("hectorrr","error en la interfaz: "+ex.getMessage());
+        }
     }
 
 
@@ -35,10 +42,11 @@ public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
             convertView= LayoutInflater.from(getContext()).inflate(R.layout.custom_list_item, parent, false);
         }
         TextView tvNombreIngrediente=convertView.findViewById(R.id.text_view_list_item);
+
         Ingrediente ingrediente=(Ingrediente) getItem(position);
         if(ingrediente!=null){
             tvNombreIngrediente.setText(ingrediente.getNombre());
-            tvNombreIngrediente.setTag(ingrediente.getId());
+            //tvNombreIngrediente.setTag(ingrediente.getId());
             Log.d("hectorr","Set Tag del id del ingrediente"+ingrediente.getId()+" Tag añadido: "+tvNombreIngrediente.getTag());
         }
         return convertView;
@@ -76,7 +84,11 @@ public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
 
         @Override
         public CharSequence convertResultToString(Object resultValue) {
+            interfaz.setTag(((Ingrediente) resultValue).getId());
             return ((Ingrediente) resultValue).getNombre();
         }
     };
+    public interface autoCompleteListener{
+        public void setTag(String tag);
+    }
 }
