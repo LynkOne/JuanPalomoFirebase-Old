@@ -37,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerRecetasFragment.recetasFragmentInteractionListener, LoginFragment.LoginFragmentInteractionListener, RegistroFragment.registroInteractionListener {
     private FrameLayout fl;
     private Fragment recyclerRecetasFragment;
+    private Fragment recyclerMisRecetasFragment;
+    private Fragment recyclerRecetasPorIngredientesFragment;
     private Fragment acercaDeFragment;
     private Fragment detallesRecetaFragment;
     private Fragment loginFragment;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction=fm.beginTransaction();
         fl=(FrameLayout) findViewById(R.id.fragment_main);
         recyclerRecetasFragment= new RecyclerRecetasFragment();
+        recyclerMisRecetasFragment=RecyclerRecetasFragment.newInstance(getResources().getString(R.string.MISRECETAS));
+        recyclerRecetasPorIngredientesFragment=RecyclerRecetasFragment.newInstance(getResources().getString(R.string.RECETASPORINGREDIENTES));
         acercaDeFragment=new AcercaDe();
 
         transaction.replace(fl.getId(), recyclerRecetasFragment);
@@ -134,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_recetas_ing:
                 //Toast.makeText(this, "pulsado menu recetas por ingredientes", Toast.LENGTH_SHORT).show();
-                transaction.replace(fl.getId(), recyclerRecetasFragment);
+                transaction.replace(fl.getId(), recyclerRecetasPorIngredientesFragment);
                 transaction.addToBackStack("");
                 transaction.commit();
                 vaciarSeleccionNavView();
@@ -153,6 +157,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigationView.getMenu().getItem(4).setChecked(true);
 
                 break;
+            case R.id.menu_mis_recetas:
+                transaction.replace(fl.getId(), recyclerMisRecetasFragment);
+                transaction.addToBackStack("");
+                transaction.commit();
             default:
                 break;
         }
@@ -198,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("hectorr", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            transaction=fm.beginTransaction();
+                            transaction.replace(fl.getId(), recyclerRecetasFragment);
+                            transaction.addToBackStack("");
+                            transaction.commit();
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -224,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void login(String email, String password) {
         entrarFirebase(email,password);
+
     }
     @Override
     public void registrarUsuario(final String email, final String password, final String usuario){
@@ -243,7 +256,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             //Si no existe lo crea, si existe lo machaca
                             dbr.child(uid).setValue(usuario_auxiliar);
                             //Registro completo
-
+                            transaction=fm.beginTransaction();
+                            transaction.replace(fl.getId(), recyclerRecetasFragment);
+                            transaction.addToBackStack("");
+                            transaction.commit();
 
                         } else {
                             // If sign in fails, display a message to the user.

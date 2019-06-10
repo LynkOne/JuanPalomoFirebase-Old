@@ -17,4 +17,6 @@
     <string name="desarrollado_por">Desarrollado por:\n</string>
     <string name="OBJETO_RECETA">receta</string>
     <string name="OBJETO_INGREDIENTES">ingredientes</string>
+    <string name="MISRECETAS">misrecetas</string>
+    <string name="RECETASPORINGREDIENTES">recetasporingredientes</string>
 </resources>

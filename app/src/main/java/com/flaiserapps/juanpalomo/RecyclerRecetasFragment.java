@@ -35,11 +35,9 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
     private ProgressBar pB;
     private Ingredientes ingredientesClase;
     private RecyclerView recyclerRecetas;
@@ -60,20 +58,12 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecyclerRecetasFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static RecyclerRecetasFragment newInstance(String param1, String param2) {
+    public static RecyclerRecetasFragment newInstance(String contenidoACargar) {
         RecyclerRecetasFragment fragment = new RecyclerRecetasFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, contenidoACargar);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,7 +73,6 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
 
@@ -143,17 +132,36 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("hectorrr", "DataChange, actualizando arraylist recetas...");
                 recetas.clear();
+                if (mParam1!=null && mParam1!=""){
+                    if (mParam1.equals(getResources().getString(R.string.MISRECETAS))){
+                        Log.d("hectorr","Rellenando con MIS recetas");
+                        for (DataSnapshot ds:dataSnapshot.getChildren()    ) {
+                            Log.d("hectorrr", ds.getValue().toString());
+                            Log.d("hectorrr", ds.getKey());
 
-                for (DataSnapshot ds:dataSnapshot.getChildren()    ) {
-                    Log.d("hectorrr", ds.getValue().toString());
-                    Log.d("hectorrr", ds.getKey());
+                            Receta aux=ds.getValue(Receta.class);
+                            aux.setId(ds.getKey());
+                            if(aux.getAutor().equals(fbUser.getUid())){
+                                recetas.add(aux);
+                            }
+                            
+                        }
+                    }
+                    if (mParam1.equals(getResources().getString(R.string.RECETASPORINGREDIENTES))){
 
-                    Receta aux=ds.getValue(Receta.class);
-                    aux.setId(ds.getKey());
-                    recetas.add(aux);
+                    }
+                }else{
+                    Log.d("hectorr","Rellenando con TODAS las recetas");
+                    for (DataSnapshot ds:dataSnapshot.getChildren()    ) {
+                        Log.d("hectorrr", ds.getValue().toString());
+                        Log.d("hectorrr", ds.getKey());
 
-
+                        Receta aux=ds.getValue(Receta.class);
+                        aux.setId(ds.getKey());
+                        recetas.add(aux);
+                    }
                 }
+
                 Log.d("hectorr", recetas.toString());
                 adapterListaRec.setRecetas(recetas);
                 adapterListaRec.notifyDataSetChanged();
@@ -172,8 +180,8 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
                 ingredientesClase.setIngredientes(new ArrayList<Ingrediente>());
                 ingredientes.clear();
                 for (DataSnapshot ds:dataSnapshot.getChildren() ) {
-                    Log.d("hectorrr", ds.getValue().toString());
-                    Log.d("hectorrr", ds.getKey());
+                    //Log.d("hectorrr", ds.getValue().toString());
+                    //Log.d("hectorrr", ds.getKey());
                     Ingrediente aux=ds.getValue(Ingrediente.class);
                     aux.setId(ds.getKey());
                     ingredientes.add(aux);

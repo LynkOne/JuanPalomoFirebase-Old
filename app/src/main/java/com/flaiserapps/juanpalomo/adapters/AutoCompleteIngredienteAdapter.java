@@ -77,9 +77,14 @@ public class AutoCompleteIngredienteAdapter extends ArrayAdapter {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            clear();
-            addAll((List) results.values);
-            notifyDataSetChanged();
+            try {
+                clear();
+                addAll((List) results.values);
+                notifyDataSetChanged();
+            }catch (Exception ex){
+                Log.d("hectorr","Error en publishResults de AutoCompleteIngredientesAdapter: "+ex.getLocalizedMessage());
+            }
+
         }
 
         @Override
