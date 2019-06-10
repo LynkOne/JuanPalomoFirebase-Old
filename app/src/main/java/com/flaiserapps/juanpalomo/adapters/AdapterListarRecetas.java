@@ -3,6 +3,8 @@ package com.flaiserapps.juanpalomo.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,8 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.flaiserapps.juanpalomo.ModificarReceta;
 import com.flaiserapps.juanpalomo.R;
 import com.flaiserapps.juanpalomo.RecyclerRecetasFragment;
+import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Receta;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,6 +32,7 @@ import java.util.ArrayList;
 public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRecetas.RecetaViewHolder>{
 
     private ArrayList<Receta> recetas;
+    private ArrayList<Ingrediente> ingredientes;
     private RecyclerRecetasFragment contexto;
     private recetasInteractionListener interfaz;
     private String contenidoACargar;
@@ -94,6 +99,17 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
             Log.d("hectorrr","error en la interfaz: "+ex.getMessage());
         }
     }
+    public AdapterListarRecetas(ArrayList<Receta> recetas, ArrayList<Ingrediente> ingredientes, RecyclerRecetasFragment contexto, String contenidoACargar) {
+        this.recetas = recetas;
+        this.contexto = contexto;
+        this.contenidoACargar=contenidoACargar;
+        this.ingredientes=ingredientes;
+        try{
+            interfaz=(recetasInteractionListener) contexto;
+        }catch (ClassCastException ex){
+            Log.d("hectorrr","error en la interfaz: "+ex.getMessage());
+        }
+    }
 
     @NonNull
     @Override
@@ -146,7 +162,12 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
                     @Override
                     public void onClick(View v) {
                         //Onclic de editar recetas
-
+                        Intent i =new Intent(v.getContext(), ModificarReceta.class);
+                        Bundle bundleModificar =new Bundle();
+                        bundleModificar.putParcelableArrayList(v.getResources().getString(R.string.OBJETO_INGREDIENTES), ingredientes);
+                        bundleModificar.putParcelable(v.getResources().getString(R.string.OBJETO_RECETA), recAux);
+                        i.putExtras(bundleModificar);
+                        v.getContext().startActivity(i);
                     }
                 });
             }

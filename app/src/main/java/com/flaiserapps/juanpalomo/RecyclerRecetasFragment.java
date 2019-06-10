@@ -136,7 +136,7 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
                 adapterListaRec=new AdapterListarRecetas(recetas,this, getResources().getString(R.string.RECETASPORINGREDIENTES));
             }
             if(mParam1.equals(getResources().getString(R.string.MISRECETAS))){
-                adapterListaRec=new AdapterListarRecetas(recetas,this, getResources().getString(R.string.MISRECETAS));
+                adapterListaRec=new AdapterListarRecetas(recetas, ingredientes,this, getResources().getString(R.string.MISRECETAS));
             }
         }else{
             adapterListaRec=new AdapterListarRecetas(recetas,this);

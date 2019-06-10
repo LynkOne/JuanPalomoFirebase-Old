@@ -16,6 +16,9 @@ public class Ingrediente implements Parcelable {
         this.id = id;
         this.nombre = nombre;
     }
+    public Ingrediente(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
