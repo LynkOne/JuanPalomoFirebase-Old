@@ -53,6 +53,8 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
     private FloatingActionButton fab;
     private FirebaseUser fbUser;
     private FirebaseAuth mAuth;
+    private String misRecetas;
+    private String recetasPorIngredientes;
 
 
 
@@ -75,6 +77,8 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
+            misRecetas=getResources().getString(R.string.MISRECETAS);
+            recetasPorIngredientes=getResources().getString(R.string.RECETASPORINGREDIENTES);
         }
 
 
@@ -146,7 +150,7 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
                 Log.d("hectorrr", "DataChange, actualizando arraylist recetas...");
                 recetas.clear();
                 if (mParam1!=null && mParam1!=""){
-                    if (mParam1.equals(getResources().getString(R.string.MISRECETAS))){
+                    if (mParam1.equals(misRecetas)){
                         Log.d("hectorr","Rellenando con MIS recetas");
                         for (DataSnapshot ds:dataSnapshot.getChildren()    ) {
                             Log.d("hectorrr", ds.getValue().toString());
@@ -154,13 +158,16 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
 
                             Receta aux=ds.getValue(Receta.class);
                             aux.setId(ds.getKey());
-                            if(aux.getAutor().equals(fbUser.getUid())){
-                                recetas.add(aux);
+                            if(aux.getAutor()!=null && aux.getAutor()!=""){
+                                if(aux.getAutor().equals(fbUser.getUid())){
+                                    recetas.add(aux);
+                                }
                             }
+
 
                         }
                     }
-                    if (mParam1.equals(getResources().getString(R.string.RECETASPORINGREDIENTES))){
+                    if (mParam1.equals(recetasPorIngredientes)){
 
                     }
                 }else{

@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import com.flaiserapps.juanpalomo.adapters.AdapterIngredientes;
 import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Receta;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,6 +31,8 @@ public class EnviarReceta extends AppCompatActivity {
     private EditText nombre_Receta, descripcion_Receta, elaboracion_Receta;
     private ImageButton addIngrediente;
     private Button enviarReceta;
+    private FirebaseAuth mAuth;
+    private FirebaseUser fbUser;
 
 
     @Override
@@ -41,6 +45,8 @@ public class EnviarReceta extends AppCompatActivity {
         if(getResources().getString(R.string.OBJETO_INGREDIENTES)!=null){
             ingredientes=(b.getParcelableArrayList(getResources().getString(R.string.OBJETO_INGREDIENTES)));
         }
+        mAuth= FirebaseAuth.getInstance();
+        fbUser= mAuth.getCurrentUser();
         ingredientes_receta = new ArrayList<Ingrediente>();
         Ingrediente auxiliar = new Ingrediente();
         ingredientes_receta.add(auxiliar);
@@ -72,7 +78,8 @@ public class EnviarReceta extends AppCompatActivity {
 
                 }
                 Receta rec_aux=new Receta(nombre_Receta.getText().toString(),descripcion_Receta.getText().toString(),elaboracion_Receta.getText().toString(),ingredientes_receta_aux );
-                //Apuntamos al nodo productos
+                rec_aux.setAutor(fbUser.getUid());
+                //Apuntamos al nodo recetas
                 DatabaseReference dbr= FirebaseDatabase.getInstance().getReference("recetas");
                 Log.d("hectorr", "Database Reference: "+dbr.toString()+
                         "\nReceta "+rec_aux.getNombre()+

@@ -1,6 +1,8 @@
 package com.flaiserapps.juanpalomo.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import com.flaiserapps.juanpalomo.R;
 import com.flaiserapps.juanpalomo.RecyclerRecetasFragment;
 import com.flaiserapps.juanpalomo.model.Receta;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -103,7 +107,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     public void onBindViewHolder(@NonNull final RecetaViewHolder recetaViewHolder, int i) {
         //Java...
         final int pos=i;
-        Receta recAux=recetas.get(i);
+        final Receta recAux=recetas.get(i);
         recetaViewHolder.nombreReceta.setText(recAux.getNombre());
         recetaViewHolder.descReceta.setText(recAux.getDescripcion());
         if (contenidoACargar!=null && contenidoACargar!="") {
@@ -120,13 +124,29 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
                     @Override
                     public void onClick(View v) {
                         //Onclic de eliminar recetas
+                        AlertDialog.Builder builder=new AlertDialog.Builder(v.getContext());
+                        builder.setMessage("¿Seguro que deseas eliminar esta receta?").setTitle("Eliminar Receta");
+                        builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK button
+                                eliminarReceta(recAux.getId());
+                            }
+                        });
+                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+                        AlertDialog dialog=builder.create();
+                        dialog.show();
+
                     }
                 });
                 recetaViewHolder.editarReceta.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //Onclic de editar recetas
-                        
+
                     }
                 });
             }
@@ -140,19 +160,15 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         recetaViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //Crear subactivity
-               // Intent i = new Intent(contexto, DetallesReceta.class);
-               // Bundle bReceta=new Bundle();
-               // bReceta.putParcelable(contexto.getResources().getString(R.string.OBJETO_RECETA), recetas.get(pos));
-               // i.putExtras(bReceta);
-               // contexto.startActivity(i);
-
-
                 //Cambiar fragment a detalles receta
                 interfaz.expandirReceta(recetas.get(pos));
             }
         });
 
+    }
+    private void eliminarReceta(String idReceta){
+        DatabaseReference dbrEliminarReceta = FirebaseDatabase.getInstance().getReference("recetas").child(idReceta);
+        dbrEliminarReceta.removeValue();
     }
 
     @Override
