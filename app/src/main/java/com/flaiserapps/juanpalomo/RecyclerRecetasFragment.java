@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
     private FloatingActionButton fab;
     private FirebaseUser fbUser;
     private FirebaseAuth mAuth;
+
 
 
     public RecyclerRecetasFragment() {
@@ -124,7 +126,18 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
         ingredientes=new ArrayList<>();
         rVLM=new LinearLayoutManager(getContext());
         recyclerRecetas.setLayoutManager(rVLM);
-        adapterListaRec=new AdapterListarRecetas(recetas,this);
+
+        if (mParam1!=null && mParam1!=""){
+            if(mParam1.equals(getResources().getString(R.string.RECETASPORINGREDIENTES))){
+                adapterListaRec=new AdapterListarRecetas(recetas,this, getResources().getString(R.string.RECETASPORINGREDIENTES));
+            }
+            if(mParam1.equals(getResources().getString(R.string.MISRECETAS))){
+                adapterListaRec=new AdapterListarRecetas(recetas,this, getResources().getString(R.string.MISRECETAS));
+            }
+        }else{
+            adapterListaRec=new AdapterListarRecetas(recetas,this);
+        }
+
         recyclerRecetas.setAdapter(adapterListaRec);
         Log.d("hectorrr", "accediendo a Firebase ruta: "+dbrRecetas.toString());
         dbrRecetas.addValueEventListener(new ValueEventListener() {
@@ -144,7 +157,7 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
                             if(aux.getAutor().equals(fbUser.getUid())){
                                 recetas.add(aux);
                             }
-                            
+
                         }
                     }
                     if (mParam1.equals(getResources().getString(R.string.RECETASPORINGREDIENTES))){

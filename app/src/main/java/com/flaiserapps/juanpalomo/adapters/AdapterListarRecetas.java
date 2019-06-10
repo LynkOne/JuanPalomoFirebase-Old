@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.flaiserapps.juanpalomo.R;
@@ -25,6 +26,7 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     private ArrayList<Receta> recetas;
     private RecyclerRecetasFragment contexto;
     private recetasInteractionListener interfaz;
+    private String contenidoACargar;
 
     //Inicio getters and setters
 
@@ -51,12 +53,16 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         private CardView cardView;
 
         TextView nombreReceta, descReceta;
+        ImageButton editarReceta, eliminarReceta;
 
         public RecetaViewHolder(@NonNull View itemView){
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.receta_card_view);
             nombreReceta=(TextView) itemView.findViewById(R.id.tv_nombrereceta);
             descReceta=(TextView) itemView.findViewById(R.id.tv_descreceta);
+            editarReceta=(ImageButton) itemView.findViewById(R.id.imageButton_editar_receta);
+            eliminarReceta=(ImageButton) itemView.findViewById(R.id.imageButton_eliminar_receta);
+
 
         }
     }
@@ -68,6 +74,16 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
     public AdapterListarRecetas(ArrayList<Receta> recetas, RecyclerRecetasFragment contexto) {
         this.recetas = recetas;
         this.contexto = contexto;
+        try{
+            interfaz=(recetasInteractionListener) contexto;
+        }catch (ClassCastException ex){
+            Log.d("hectorrr","error en la interfaz: "+ex.getMessage());
+        }
+    }
+    public AdapterListarRecetas(ArrayList<Receta> recetas, RecyclerRecetasFragment contexto, String contenidoACargar) {
+        this.recetas = recetas;
+        this.contexto = contexto;
+        this.contenidoACargar=contenidoACargar;
         try{
             interfaz=(recetasInteractionListener) contexto;
         }catch (ClassCastException ex){
@@ -90,7 +106,35 @@ public class AdapterListarRecetas extends  RecyclerView.Adapter<AdapterListarRec
         Receta recAux=recetas.get(i);
         recetaViewHolder.nombreReceta.setText(recAux.getNombre());
         recetaViewHolder.descReceta.setText(recAux.getDescripcion());
-
+        if (contenidoACargar!=null && contenidoACargar!="") {
+            if (contenidoACargar.equals(recetaViewHolder.itemView.getResources().getString(R.string.RECETASPORINGREDIENTES))) {
+                //Si entramos desde el menú recetas por ingredientes ocultamos los botones
+                recetaViewHolder.eliminarReceta.setVisibility(View.INVISIBLE);
+                recetaViewHolder.editarReceta.setVisibility(View.INVISIBLE);
+            }
+            if (contenidoACargar.equals(recetaViewHolder.itemView.getResources().getString(R.string.MISRECETAS))) {
+                //Si entramos desde el menú mis recetas asumimos que son nuestras recetas y mostramos los botones de editar y eliminar
+                recetaViewHolder.eliminarReceta.setVisibility(View.VISIBLE);
+                recetaViewHolder.editarReceta.setVisibility(View.VISIBLE);
+                recetaViewHolder.eliminarReceta.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Onclic de eliminar recetas
+                    }
+                });
+                recetaViewHolder.editarReceta.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Onclic de editar recetas
+                        
+                    }
+                });
+            }
+        }else{
+            //Si entramos desde el menú explorar recetas ocultamos los botones
+            recetaViewHolder.eliminarReceta.setVisibility(View.INVISIBLE);
+            recetaViewHolder.editarReceta.setVisibility(View.INVISIBLE);
+        }
 
 
         recetaViewHolder.cardView.setOnClickListener(new View.OnClickListener() {

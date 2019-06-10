@@ -3,6 +3,7 @@ package com.flaiserapps.juanpalomo;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,11 @@ import android.widget.Toast;
 import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Ingredientes;
 import com.flaiserapps.juanpalomo.model.Receta;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class DetallesRecetaFragment extends Fragment {
@@ -24,6 +30,7 @@ public class DetallesRecetaFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private Receta receta;
+    private DatabaseReference dbr;
     private Ingredientes ingredientes;
     private String str_ingredientes="Ingredientes: \n";
     private TextView titulo_receta, descripcion_receta, ingredientes_receta, elaboracion_receta, autor;
@@ -85,7 +92,19 @@ public class DetallesRecetaFragment extends Fragment {
         if (receta.getAutor()==null || receta.getAutor()==""){
             autor.setText("Autor: \nAnónimo");
         }else{
-            autor.setText("Autor: \n"+receta.getAutor());
+            dbr=FirebaseDatabase.getInstance().getReference("usuarios/"+receta.getAutor()+"/nombre");
+            dbr.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    autor.setText("Autor: \n"+dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }
 
         return v;
