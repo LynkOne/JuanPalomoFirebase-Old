@@ -12,6 +12,7 @@ public class Receta implements Parcelable {
     private String descripcion;
     private String elaboracion;
     private ArrayList<String> ingredientes;
+    private String autor;
 
     public Receta() {
     }
@@ -71,11 +72,20 @@ public class Receta implements Parcelable {
         this.id = id;
     }
 
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
     protected Receta(Parcel in) {
         id = in.readString();
         nombre = in.readString();
         descripcion = in.readString();
         elaboracion = in.readString();
+        autor = in.readString();
         if (in.readByte() == 0x01) {
             ingredientes = new ArrayList<String>();
             in.readList(ingredientes, String.class.getClassLoader());
@@ -95,6 +105,7 @@ public class Receta implements Parcelable {
         dest.writeString(nombre);
         dest.writeString(descripcion);
         dest.writeString(elaboracion);
+        dest.writeString(autor);
         if (ingredientes == null) {
             dest.writeByte((byte) (0x00));
         } else {

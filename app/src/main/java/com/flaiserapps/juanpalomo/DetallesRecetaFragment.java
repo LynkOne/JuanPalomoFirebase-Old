@@ -26,7 +26,7 @@ public class DetallesRecetaFragment extends Fragment {
     private Receta receta;
     private Ingredientes ingredientes;
     private String str_ingredientes="Ingredientes: \n";
-    private TextView titulo_receta, descripcion_receta, ingredientes_receta, elaboracion_receta;
+    private TextView titulo_receta, descripcion_receta, ingredientes_receta, elaboracion_receta, autor;
 
     public DetallesRecetaFragment() {
 
@@ -60,7 +60,7 @@ public class DetallesRecetaFragment extends Fragment {
         descripcion_receta=(TextView) v.findViewById(R.id.textView_descripcion_detalle);
         ingredientes_receta=(TextView) v.findViewById(R.id.textView_ingredientes_detalle);
         elaboracion_receta=(TextView) v.findViewById(R.id.textView_elaboracion_detalle);
-
+        autor=(TextView) v.findViewById(R.id.textView_autor_detalle);
         titulo_receta.setText(receta.getNombre());
         descripcion_receta.setText(receta.getDescripcion());
         Log.d("hectorrr", "Rellenando ingredientes....");
@@ -82,6 +82,12 @@ public class DetallesRecetaFragment extends Fragment {
         }
 
         elaboracion_receta.setText("Elaboración: \n"+receta.getElaboracion());
+        if (receta.getAutor()==null || receta.getAutor()==""){
+            autor.setText("Autor: \nAnónimo");
+        }else{
+            autor.setText("Autor: \n"+receta.getAutor());
+        }
+
         return v;
     }
 

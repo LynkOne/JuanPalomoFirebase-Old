@@ -30,9 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            app:maxImageSize="60dp"
+            app:maxImageSize="40dp"
             android:scaleType="center"
-            android:src="@android:drawable/ic_menu_add" />
+            android:src="@drawable/ic_menu_add" />
 
         <ProgressBar
             android:id="@+id/progressBarFABRecetas"

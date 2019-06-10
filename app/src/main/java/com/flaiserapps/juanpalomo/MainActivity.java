@@ -1,5 +1,6 @@
 package com.flaiserapps.juanpalomo;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,24 +23,50 @@ import android.widget.Toast;
 
 import com.flaiserapps.juanpalomo.model.Ingredientes;
 import com.flaiserapps.juanpalomo.model.Receta;
+import com.flaiserapps.juanpalomo.model.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerRecetasFragment.recetasFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, RecyclerRecetasFragment.recetasFragmentInteractionListener, LoginFragment.LoginFragmentInteractionListener, RegistroFragment.registroInteractionListener {
     private FrameLayout fl;
     private Fragment recyclerRecetasFragment;
     private Fragment acercaDeFragment;
     private Fragment detallesRecetaFragment;
+    private Fragment loginFragment;
+    private Fragment registroFragment;
     private FragmentTransaction transaction;
     private FragmentManager fm;
     private Toolbar toolbar;
     private boolean isShown = false;
     private LinearLayout menuLayout;
     private DrawerLayout drawer;
+    private FirebaseAuth mAuth;
+    private FirebaseUser fbUser;
+    FirebaseAuth.AuthStateListener mAuthListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar=(Toolbar) findViewById(R.id.toolbar_menu);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user_aux = FirebaseAuth.getInstance().getCurrentUser();
+                if(user_aux!=null){
+                    fbUser=user_aux;
+
+                }
+            }
+        };
 
         //menuLayout=(LinearLayout) findViewById(R.id.);
         //final DrawerLayout
@@ -150,5 +178,88 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
 
         
+    }
+
+    @Override
+    public void fab_iniciarLogin() {
+        loginFragment=new LoginFragment();
+        transaction=fm.beginTransaction();
+        transaction.replace(fl.getId(), loginFragment);
+        transaction.addToBackStack("");
+        transaction.commit();
+    }
+
+    private void entrarFirebase(String email, String password){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("hectorr", "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("hectorr", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
+    @Override
+    public void registro() {
+        registroFragment=new RegistroFragment();
+        transaction=fm.beginTransaction();
+        transaction.replace(fl.getId(), registroFragment);
+        transaction.addToBackStack("");
+        transaction.commit();
+    }
+
+    @Override
+    public void login(String email, String password) {
+        entrarFirebase(email,password);
+    }
+    @Override
+    public void registrarUsuario(final String email, final String password, final String usuario){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("hectorr", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String uid=user.getUid();
+                            Usuario usuario_auxiliar=new Usuario(usuario);
+                            //Apuntamos al nodo usuarios
+                            DatabaseReference dbr= FirebaseDatabase.getInstance().getReference("usuarios");
+                            Log.d("hecotrr", "Database Reference: "+dbr.toString());
+                            //Si no existe lo crea, si existe lo machaca
+                            dbr.child(uid).setValue(usuario_auxiliar);
+                            //Registro completo
+
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("hectorr", "createUserWithEmail:failure", task.getException());
+                        }
+
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        FirebaseAuthException feAux = (FirebaseAuthException) e;
+                        String errcode=feAux.getErrorCode();
+
+                    }
+                });
     }
 }

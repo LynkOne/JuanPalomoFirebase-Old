@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".RegistroFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/textView_registro_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_margin="50dp"
+            android:text="Registrar nuevo Usuario" />
+
+        <TextView
+            android:id="@+id/textView_registro_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de Usuario:\n(Este será el nombre que vean los demás usuarios)"
+            app:layout_constraintTop_toBottomOf="@id/textView_registro_titulo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editText_registro_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintTop_toBottomOf="@id/textView_registro_usuario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"
+            />
+
+        <TextView
+            android:id="@+id/textView_registro_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dirección de correo:"
+            app:layout_constraintTop_toBottomOf="@id/editText_registro_usuario"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editText_registro_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintTop_toBottomOf="@id/textView_registro_email"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"/>
+
+        <TextView
+            android:id="@+id/textView_registro_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contraseña:"
+            app:layout_constraintTop_toBottomOf="@id/editText_registro_email"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/editText_registro_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintTop_toBottomOf="@id/textView_registro_password"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"/>
+
+        <Button
+            android:id="@+id/button_registro_registrarse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registrarse"
+            app:layout_constraintTop_toBottomOf="@id/editText_registro_password"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="15dp"/>
+
+
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

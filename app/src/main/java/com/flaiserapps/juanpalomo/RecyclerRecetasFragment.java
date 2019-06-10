@@ -20,6 +20,8 @@ import com.flaiserapps.juanpalomo.adapters.AdapterListarRecetas;
 import com.flaiserapps.juanpalomo.model.Ingrediente;
 import com.flaiserapps.juanpalomo.model.Ingredientes;
 import com.flaiserapps.juanpalomo.model.Receta;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,8 +51,9 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
     private DatabaseReference dbrIngredientes;
     private boolean ingredientesCargados=false;
     private recetasFragmentInteractionListener interfaz;
-
     private FloatingActionButton fab;
+    private FirebaseUser fbUser;
+    private FirebaseAuth mAuth;
 
 
     public RecyclerRecetasFragment() {
@@ -87,10 +90,12 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_recycler_recetas, container, false);
+        mAuth=FirebaseAuth.getInstance();
+        fbUser= mAuth.getCurrentUser();
         ingredientesClase=new Ingredientes();
         pB=(ProgressBar) v.findViewById(R.id.progressBarFABRecetas);
         pB.setVisibility(View.INVISIBLE);
@@ -103,16 +108,25 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
             public void onClick(View v) {
                 //OnClick del FloatingActionButton
                 pB.setVisibility(View.VISIBLE);
-                Intent i = new Intent(getContext(), EnviarReceta.class);
-                Bundle bIngredientes=new Bundle();
-                if(ingredientesCargados){
-                    bIngredientes.putParcelableArrayList(getResources().getString(R.string.OBJETO_INGREDIENTES), ingredientes);
-                    i.putExtras(bIngredientes);
+
+                if(fbUser!=null){
+                    //Si el usuario está logueado accede a enviar receta directamente
+                    Intent i = new Intent(getContext(), EnviarReceta.class);
+                    Bundle bIngredientes=new Bundle();
+                    if(ingredientesCargados){
+                        bIngredientes.putParcelableArrayList(getResources().getString(R.string.OBJETO_INGREDIENTES), ingredientes);
+                        i.putExtras(bIngredientes);
+                        pB.setVisibility(View.INVISIBLE);
+                        startActivity(i);
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Error, intentalo de nuevo en unos segundos", Toast.LENGTH_SHORT).show();
+                        pB.setVisibility(View.INVISIBLE);
+                    }
+                }else{
+                    //Si no está logueado
+                    interfaz.fab_iniciarLogin();
                     pB.setVisibility(View.INVISIBLE);
-                    startActivity(i);
-                }
-                else{
-                    Toast.makeText(getContext(), "Error, intentalo de nuevo en unos segundos", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -214,5 +228,6 @@ public class RecyclerRecetasFragment extends Fragment implements AdapterListarRe
 
     public interface recetasFragmentInteractionListener{
         void expandirRecetaFragment(Receta receta, Ingredientes ingredientes);
+        void fab_iniciarLogin();
     }
 }
